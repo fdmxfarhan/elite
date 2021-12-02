@@ -96,7 +96,7 @@ class MyRobot1(RCJSoccerRobot):
                 elif(self.role == 'goalkeeper'):
                     ball_direction_line = Line()
                     ball_direction_line.drawLineWithTwoPoint(ball_pos, last_ball_pos)
-                    gaol_keeper_line = Line(0, 1, 0.67)
+                    gaol_keeper_line = Line(0, 1, 0.66)
                     
                     intersection = ball_direction_line.getIntersectionWithLine(gaol_keeper_line)
                     goal_keeper_y = ball_pos['y']
