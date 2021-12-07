@@ -49,7 +49,7 @@ class MyRobot1(RCJSoccerRobot):
         goal_keeper_x = -0.67
         flag = False
         last_ball_pos = {'x': 0, 'y': 0}
-        last_ball_time = 0
+        last_ball_time = time()
         cnt = 0
         sleep(0.1)
         self.role = 'forward'
@@ -68,24 +68,26 @@ class MyRobot1(RCJSoccerRobot):
                     self.role = 'goalkeeper'
                 else: 
                     self.role = 'forward'
-                ball2goal.drawLineWithTwoPoint(ball_pos, gaol_pos)  
-                aroundBall = Circle(ball_pos, 0.1)
-                points = aroundBall.getIntersectionWithLine(ball2goal)
-                p = points[0]
-                if(len(points) > 1):
-                    if(getDisgtance(gaol_pos, points[0]) < getDisgtance(gaol_pos, points[1])):
-                        p = points[1]
                 ball_speed = getDisgtance(ball_pos, last_ball_pos)/(time() - last_ball_time)
 
                 if(self.role == 'forward'):
-                    if(ball_speed > 0.1 and ball_speed < 5):
-                        delta_x = ball_speed*10
+                    print(ball_speed)
+                    if(ball_speed > 0.1):
+                        delta_x = ball_speed*1
                         angle = getAngle(ball_pos, last_ball_pos)
                         x = delta_x * cos(angle)
                         y = delta_x * sin(angle)
                         ball_pos['x'] += x
                         ball_pos['y'] += y
-
+                    ball2goal.drawLineWithTwoPoint(ball_pos, gaol_pos)  
+                    aroundBall = Circle(ball_pos, 0.1)
+                    points = aroundBall.getIntersectionWithLine(ball2goal)
+                    p = ball_pos
+                    if(len(points) != 0):
+                        p = points[0]
+                    if(len(points) > 1):
+                        if(getDisgtance(gaol_pos, points[0]) < getDisgtance(gaol_pos, points[1])):
+                            p = points[1]
                     if(getDisgtance(p, robot_pos) > 0.05 and not flag):
                         self.move(p)
                     else:
@@ -96,8 +98,7 @@ class MyRobot1(RCJSoccerRobot):
                 elif(self.role == 'goalkeeper'):
                     ball_direction_line = Line()
                     ball_direction_line.drawLineWithTwoPoint(ball_pos, last_ball_pos)
-                    gaol_keeper_line = Line(0, 1, 0.66)
-                    
+                    gaol_keeper_line = Line(0, 1, 0.67)
                     intersection = ball_direction_line.getIntersectionWithLine(gaol_keeper_line)
                     goal_keeper_y = ball_pos['y']
                     if(intersection != None):
@@ -105,7 +106,9 @@ class MyRobot1(RCJSoccerRobot):
                     if(goal_keeper_y > 0.4): goal_keeper_y = 0.4
                     if(goal_keeper_y <-0.4): goal_keeper_y =-0.4
                     self.move({'x': goal_keeper_x , 'y': goal_keeper_y})
-
-                last_ball_pos = self.data['ball']
-                last_ball_time = time()
+                
+                
+                if(time() - last_ball_time > 0.5):
+                    last_ball_pos = self.data['ball']
+                    last_ball_time = time()
 

@@ -39,8 +39,8 @@ class MyRobot3(RCJSoccerRobot):
         if(lv > 10): lv = 10
         if(rv <-10): rv =-10
         if(lv <-10): lv =-10
-        self.left_motor.setVelocity(lv)
-        self.right_motor.setVelocity(rv)
+        # self.left_motor.setVelocity(lv)
+        # self.right_motor.setVelocity(rv)
     
     def run(self):
         ball2goal = Line()
@@ -68,13 +68,6 @@ class MyRobot3(RCJSoccerRobot):
                     self.role = 'goalkeeper'
                 else: 
                     self.role = 'forward'
-                ball2goal.drawLineWithTwoPoint(ball_pos, gaol_pos)  
-                aroundBall = Circle(ball_pos, 0.1)
-                points = aroundBall.getIntersectionWithLine(ball2goal)
-                p = points[0]
-                if(len(points) > 1):
-                    if(getDisgtance(gaol_pos, points[0]) < getDisgtance(gaol_pos, points[1])):
-                        p = points[1]
                 ball_speed = getDisgtance(ball_pos, last_ball_pos)/(time() - last_ball_time)
 
                 if(self.role == 'forward'):
@@ -85,7 +78,13 @@ class MyRobot3(RCJSoccerRobot):
                         y = delta_x * sin(angle)
                         ball_pos['x'] += x
                         ball_pos['y'] += y
-
+                    ball2goal.drawLineWithTwoPoint(ball_pos, gaol_pos)  
+                    aroundBall = Circle(ball_pos, 0.1)
+                    points = aroundBall.getIntersectionWithLine(ball2goal)
+                    p = points[0]
+                    if(len(points) > 1):
+                        if(getDisgtance(gaol_pos, points[0]) < getDisgtance(gaol_pos, points[1])):
+                            p = points[1]
                     if(getDisgtance(p, robot_pos) > 0.05 and not flag):
                         self.move(p)
                     else:

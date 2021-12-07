@@ -20,8 +20,8 @@ class MyRobot3(RCJSoccerRobot):
                 ball_pos = self.data['ball']
                 robot_pos = self.data[self.name]
                 
-                if(abs(ball_pos['x'] - robot_pos['x']) > 0.1 or abs(ball_pos['y'] - robot_pos['y']) > 0.1):
-                    self.move({'x': ball_pos['x'] - 0.1, 'y': ball_pos['y']})
-                else:
-                    self.move(ball_pos)
+                # if(abs(ball_pos['x'] - robot_pos['x']) > 0.1 or abs(ball_pos['y'] - robot_pos['y']) > 0.1):
+                #     self.move({'x': ball_pos['x'] - 0.1, 'y': ball_pos['y']})
+                # else:
+                #     self.move(ball_pos)
 
